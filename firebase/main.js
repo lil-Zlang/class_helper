@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Test Firebase Data</title>
-  <!-- Firebase SDK 9+ compatible CDN links -->
-  <script type="module">
+
     // Import the functions you need from the SDKs you need
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js';
     import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js';
@@ -26,8 +20,7 @@
     const database = getDatabase(app);
 
     // Reference to your data
-    const jobRef = ref(database, 'job1');
-    
+    const jobRef = ref(database, 'job2');
 
     // Get the data using dot notation (conceptually)
     onValue(jobRef, (snapshot) => {
@@ -39,11 +32,3 @@
     }, {
       onlyOnce: true
     });
-  </script>
-</head>
-<body>
-  <h1 id="title">Job Title</h1>
-  <p id="description">Job Description</p>
-  <img id="image" src="" alt="Job Image">
-</body>
-</html>

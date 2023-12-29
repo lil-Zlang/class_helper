@@ -47,29 +47,36 @@ function uploadFile(file) {
     });
 }
 
-//Event listener for the file input change event
-document.addEventListener('DOMContentLoaded', () => {
-  const fileInputElement = document.getElementById('fileInput');
-  fileInputElement.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      uploadFile(file);
-    }
-  });
-});
+// //Event listener for the file input change event
+// document.addEventListener('DOMContentLoaded', () => {
+//   const fileInputElement = document.getElementById('fileInput');
+//   fileInputElement.addEventListener('change', (event) => {
+//     const file = event.target.files[0];
+//     if (file) {
+//       uploadFile(file);
+//     }
+//   });
+// });
 
 function loadImageAndInfo() {
-    // Direct URL to the image in Firebase Storage
-    const imageUrl = "https://firebasestorage.googleapis.com/v0/b/classhel-da175.appspot.com/o/uploads%2Fhardware_eng.png?alt=media&token=917dc003-fcb7-4339-bf7d-469219f935c6";
+  const imageUrl = "https://firebasestorage.googleapis.com/v0/b/classhel-da175.appspot.com/o/uploads%2Fhardware_eng.png?alt=media&token=917dc003-fcb7-4339-bf7d-469219f935c6";
 
-    // Update the HTML image element
-    document.getElementById("imageElement").src = imageUrl;
-
-    // Here you can also add code to fetch and display additional information
-    // For example:
-    // document.getElementById("imageInfo").textContent = "Some additional information about the image";
+  // Update the HTML image element with the new ID
+  document.getElementById("firebaseImage").src = imageUrl;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadImageAndInfo();
-});
+// // Ensure this function is called when the page loads or at the appropriate time
+// document.addEventListener('DOMContentLoaded', function() {
+//   loadImageAndInfo();
+// });
+
+// Get a database reference to our posts
+const db = getDatabase();
+const ref = db.ref('https://classhel-da175-default-rtdb.firebaseio.com/');
+
+// Attach an asynchronous callback to read the data at our posts reference
+ref.on('value', (snapshot) => {
+  console.log(snapshot.val());
+}, (errorObject) => {
+  console.log('The read failed: ' + errorObject.name);
+}); 

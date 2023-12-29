@@ -1,11 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
-
+	
 	<head>
         <!-- meta data -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Firebase Storage Upload</title>
+		
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
         <!--font-family-->
@@ -16,7 +18,7 @@
 
         <!-- For favicon png -->
 		<link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png"/>
-       
+    
         <!--font-awesome.min.css-->
         <link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
@@ -54,7 +56,6 @@
         <![endif]-->
 
     </head>
-	
 	
 	<body>
 		<!--[if lte IE 9]>
@@ -117,9 +118,10 @@
 				<div class="explore-content">
 					<div class="row">
 						<div class=" col-md-4 col-sm-6">
+							<div id="job1" class ="job-entry"></div>
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/images/explore/e1.jpg" alt="explore image">
+									<img id="job1-image" src="" alt="Job Image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">best rated</button>
 										<div class="single-explore-image-icon-box">
@@ -139,7 +141,7 @@
 									</div>
 								</div>
 								<div class="single-explore-txt bg-theme-1">
-									<h2><a href="#">tommy helfinger bar</a></h2>
+									<h1 id="job1-title"></h1>
 									<p class="explore-rating-price">
 										<span class="explore-rating">5.0</span>
 										<a href="#"> 10 ratings</a> 
@@ -159,9 +161,7 @@
 												</div>
 											</div>
 											<div class="col-sm-10">
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incid ut labore et dolore magna aliqua.... 
-												</p>
+												<p id="job1-description">Job Description</p>
 											</div>
 										</div>
 									</div>
@@ -515,6 +515,10 @@
 					</div>
 				</div>
 			</div><!--/.container-->
+
+
+			<script type = "module" src="firebase/main.js"></script>
+
 
 		</section><!--/.explore-->
 		<!--explore end -->

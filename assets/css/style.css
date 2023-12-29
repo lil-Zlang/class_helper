@@ -454,16 +454,19 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
     -o-transition:.3s linear;
     transition: .3s linear;
 }
-.single-explore-img{position:relative;overflow: hidden;}
-.single-explore-img:before {
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(162,172,177,.2);
+.single-explore-img {
+    position: relative;
+    overflow: hidden;
+    height: 300px; /* Set a fixed height or use padding-top for aspect ratio */
 }
+
+.single-explore-img img {
+    width: 100%;        /* Causes the image to fill the container width */
+    height: 100%;       /* Will take the height of the container */
+    object-fit: cover;  /* Ensures the image covers the area without distortion */
+    display: block;     /* Remove any extra space below the image */
+}
+
 .single-explore-img-info {
     position: absolute;
     bottom:-20px;
