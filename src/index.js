@@ -1,25 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc // Import the addDoc function
-} from 'firebase/firestore/lite';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const appSetting  ={
-    databaseURL: "https://classhel-da175-default-rtdb.firebaseio.com"
-}
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyD_WRxTkKNU_byr484vOx7k9usHVb2HJ6Y",
   authDomain: "classhel-da175.firebaseapp.com",
+  databaseURL: "https://classhel-da175-default-rtdb.firebaseio.com",
   projectId: "classhel-da175",
   storageBucket: "classhel-da175.appspot.com",
   messagingSenderId: "1075696002533",
@@ -27,37 +16,60 @@ const firebaseConfig = {
   measurementId: "G-KBZBFZRHDH"
 };
 
+const firebase = require("firebase/app");
+require("firebase/analytics");
+require("firebase/storage");
+
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const db = getFirestore(app);
+const storage = getStorage(app);
 
+//Function to handle file uploads to Firebase Storage
+function uploadFile(file) {
+  // Create a storage reference with the file name in the 'uploads' folder
+  const uploadRef = storageRef(storage, `uploads/${file.name}`);
 
-
-// Function to add a class to the "classes" collection
-async function addClass(classData) {
-    try {
-      const docRef = await addDoc(collection(db, "classes"), classData);
-      console.log("Class added with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding class: ", e);
-    }
-  }
-  
-  // Event listener for the form submission
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('class-form');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      const classData = {
-        code: document.getElementById('code').value,
-        title: document.getElementById('title').value,
-        credits: parseInt(document.getElementById('credits').value, 10),
-        prerequisites: document.getElementById('prerequisites').value.split(','),
-        corequisites: document.getElementById('corequisites').value.split(','),
-        description: document.getElementById('description').value,
-      };
-      addClass(classData);
+  // Upload the file to Firebase Storage
+  uploadBytes(uploadRef, file)
+    .then((snapshot) => {
+      console.log(`Successfully uploaded file: ${file.name}`);
+      // Get the download URL
+      return getDownloadURL(uploadRef);
+    })
+    .then((downloadURL) => {
+      console.log(`File available at: ${downloadURL}`);
+    })
+    .catch((error) => {
+      console.error(`Error uploading file: ${error.message}`);
     });
+}
+
+//Event listener for the file input change event
+document.addEventListener('DOMContentLoaded', () => {
+  const fileInputElement = document.getElementById('fileInput');
+  fileInputElement.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      uploadFile(file);
+    }
   });
-  
+});
+
+function loadImageAndInfo() {
+    // Direct URL to the image in Firebase Storage
+    const imageUrl = "https://firebasestorage.googleapis.com/v0/b/classhel-da175.appspot.com/o/uploads%2Fhardware_eng.png?alt=media&token=917dc003-fcb7-4339-bf7d-469219f935c6";
+
+    // Update the HTML image element
+    document.getElementById("imageElement").src = imageUrl;
+
+    // Here you can also add code to fetch and display additional information
+    // For example:
+    // document.getElementById("imageInfo").textContent = "Some additional information about the image";
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadImageAndInfo();
+});
