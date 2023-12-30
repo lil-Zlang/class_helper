@@ -13,22 +13,39 @@
     messagingSenderId: "1075696002533",
     appId: "1:1075696002533:web:5a6ca3560f855843507b0c",
     measurementId: "G-KBZBFZRHDH"
-  };
+    };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-    // Reference to your data
-    const jobRef = ref(database, 'job2');
 
-    // Get the data using dot notation (conceptually)
-    onValue(jobRef, (snapshot) => {
-      const data = snapshot.val(); // data is now the job object
-      // Now you can use dot notation to access data properties
-      document.getElementById('title').textContent = data.title;
-      document.getElementById('description').textContent = data.description;
-      document.getElementById('image').src = data.imageUrl;
+window.addEventListener('DOMContentLoaded', () => {
+    const databaseRef = ref(database);
+
+    onValue(databaseRef, (snapshot) => {
+        const allJobs = snapshot.val();
+        ['EE', 'CE','BME','ME'].forEach(category => {
+        if (allJobs[category]) {
+            allJobs[category].forEach((job, index) => {
+            const titleElementId = `${category}-${index}-title`;
+            const descriptionElementId = `${category}-${index}-description`;
+            const salaryRangeElementId = `${category}-${index}-salaryRange`;
+            const imageElementId = `${category}-${index}-image`;
+
+            const titleElement = document.getElementById(titleElementId);
+            const descriptionElement = document.getElementById(descriptionElementId);
+            const salaryRangeElement = document.getElementById(salaryRangeElementId);
+            const imageElement = document.getElementById(imageElementId);
+
+            if (titleElement) titleElement.textContent = job.title;
+            if (descriptionElement) descriptionElement.textContent = job.description;
+            if (salaryRangeElement) salaryRangeElement.textContent = job.salaryRange;
+            if (imageElement) imageElement.src = job.image;
+            });
+        }
+        });
     }, {
-      onlyOnce: true
+        onlyOnce: true
+    });
     });

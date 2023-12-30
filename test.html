@@ -25,25 +25,48 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    // Reference to your data
-    const jobRef = ref(database, 'job1');
+  // ... Firebase initialization code ...
+
+    window.addEventListener('DOMContentLoaded', () => {
+    const databaseRef = ref(database);
+
+    onValue(databaseRef, (snapshot) => {
+        const allJobs = snapshot.val();
+        ['EE', 'CE','BME','ME'].forEach(category => {
+        if (allJobs[category]) {
+            allJobs[category].forEach((job, index) => {
+            const titleElementId = `${category}-${index}-title`;
+            const descriptionElementId = `${category}-${index}-description`;
+            const salaryRangeElementId = `${category}-${index}-salaryRange`;
+            const imageElementId = `${category}-${index}-image`;
+
+            const titleElement = document.getElementById(titleElementId);
+            const descriptionElement = document.getElementById(descriptionElementId);
+            const salaryRangeElement = document.getElementById(salaryRangeElementId);
+            const imageElement = document.getElementById(imageElementId);
+
+            if (titleElement) titleElement.textContent = job.title;
+            if (descriptionElement) descriptionElement.textContent = job.description;
+            if (salaryRangeElement) salaryRangeElement.textContent = job.salaryRange;
+            if (imageElement) imageElement.src = job.image;
+            });
+        }
+        });
+    }, {
+        onlyOnce: true
+    });
+    });
+
+
+    </script>
+    </head>
+    <body>
+    <h1 id="BME-0-title">Job Title</h1>
+    <p id="BME-0-description">Job Description</p>
+    <p id="BME-0-salaryRange">Salary Range</p>
+    <img id="BME-0-image" src="" alt="Job Image">
+    
     
 
-    // Get the data using dot notation (conceptually)
-    onValue(jobRef, (snapshot) => {
-      const data = snapshot.val(); // data is now the job object
-      // Now you can use dot notation to access data properties
-      document.getElementById('title').textContent = data.title;
-      document.getElementById('description').textContent = data.description;
-      document.getElementById('image').src = data.imageUrl;
-    }, {
-      onlyOnce: true
-    });
-  </script>
-</head>
-<body>
-  <h1 id="title">Job Title</h1>
-  <p id="description">Job Description</p>
-  <img id="image" src="" alt="Job Image">
-</body>
+    </body>
 </html>
