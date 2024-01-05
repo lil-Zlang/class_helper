@@ -1,15 +1,1 @@
-<button hx-get="/load_chat/{{ chat.id }}" class="chat-{{ chat.id }}" hx-target="main" hx-trigger="click, load">
-    <div id="chat-name" contenteditable="true" oninput="updateChatNameLive('{{ chat.id }}')">{{ chat.title }}</div>
-</button>
-
-<script>
-function updateChatNameLive(chatId) {
-    var newTitle = document.getElementById('chat-name').innerText;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/update_chat_name", true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send("chat_id=" + chatId + "&new_title=" + encodeURIComponent(newTitle));
-}
-
-</script>
+<button hx-get="/load_chat/{{ chat.id }}" class="chat-{{ chat.id }}" hx-target="main" hx-trigger="click, load">{{ chat.title }}</button>

@@ -9,24 +9,16 @@
     <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <main>
-        <div id="chat" class="messages">
-            <!-- Include messages.html to display the conversation -->
-            {% include 'messages.html' %}
-        </div>
+    <nav>
+        <button hx-post="/new_chat"
+                hx-target="#chats"
+                hx-swap="afterbegin"
+                >+ New chat</button>
 
-        <!-- Make sure the form uses hx-swap="beforeend" to append messages -->
-        <form id="messageform" autocomplete="off" hx-post="/send_message" hx-target="#chat" hx-swap="beforeend">
-            <input type="hidden" name="chat_id" value="{{ chat_id }}" />
-            <input type="text" id="message-input" name="message" placeholder="Type your message here..." />
-            <button>Send</button>
-        </form>
+        <div id="chats" hx-get="/conversations" hx-trigger="load"></div>
+    </nav>
+    <main>
+
     </main>
-    <script>
-        // No need for clearInput function as HTMX will handle the form reset
-        document.body.addEventListener('htmx:afterRequest', function() {
-            document.getElementById('message-input').value = '';  // Clear the input field after HTMX request
-        });
-    </script>
 </body>
 </html>

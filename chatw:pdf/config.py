@@ -19,7 +19,7 @@ def load(settings_file):
         print("INFO: Creating an assistant")
         assistant = openai.beta.assistants.create(
             model="gpt-3.5-turbo-1106",
-            name="Threddy 2",
+            name="course/helper chatbot",
             tools=[
                 {"type": "retrieval"},
             ]
