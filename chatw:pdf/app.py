@@ -1,58 +1,36 @@
-from flask import Flask, render_template, request, session, redirect, url_for
-from openai import OpenAI
-
-client = OpenAI()
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+import openai
 import uuid
-import os
-import json
-import config   
-from flask import Flask, render_template, request, session
-from openai import OpenAI
-
-client = OpenAI()
 import tempfile
 import os
 from werkzeug.utils import secure_filename
-
-# Other imports as necessary
-
-
-database = {"conversations": {}}
+import json
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # or any other method to generate a secret key
+app.secret_key = os.urandom(24)
 
-# Assuming settings.json has the OpenAI API key
-
+# Load API Key
 with open("settings.json", "r") as settings_file:
     settings = json.load(settings_file)
-app.config['SECRET_KEY'] = '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'
+openai.api_key = settings["openai_api_key"]
+
 @app.route("/")
 def index():
-    session['conversation'] = []  # Start a new conversation
+    session['conversation'] = []
     return render_template("index.html")
 
 @app.route("/send_message", methods=["POST"])
 def send_message():
     file_ids = []
-    # Handle file upload if necessary
-    # ... file handling code ...
     if "file" in request.files:
         file = request.files["file"]
         if file.filename != "":
             temp_dir = tempfile.mkdtemp()
-
             filename = secure_filename(file.filename)
             file_path = os.path.join(temp_dir, filename)
-
-            print(f"Saving to {file_path}")
-
             file.save(file_path)
-            uploaded_file = openai.files.create(
-                file=openai.file_from_path(file_path),
-                purpose="assistants",
-            )
 
+            uploaded_file = openai.File.create(file=open(file_path, 'rb'), purpose='answers')
             file_ids.append(uploaded_file.id)
 
             os.remove(file_path)
@@ -63,8 +41,11 @@ def send_message():
     session['conversation'].append({"role": "user", "content": user_message})
 
     try:
-        response = client.chat.completions.create(model="gpt-3.5-turbo",
-        messages=session['conversation'])
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=session['conversation'],
+            file=file_ids[0] if file_ids else None
+        )
         response_message = response.choices[0].message.content
         session['conversation'].append({"role": "assistant", "content": response_message})
     except Exception as e:
@@ -72,11 +53,6 @@ def send_message():
         response_message = "Sorry, I couldn't process your request."
 
     return render_template("messages.html", messages=session['conversation'])
-
-@app.route("/get_response")
-def get_response():
-    # You may not need this route if you're handling everything in send_message
-    pass
 
 if __name__ == "__main__":
     app.run(debug=True)
