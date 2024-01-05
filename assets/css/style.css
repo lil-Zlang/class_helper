@@ -994,6 +994,56 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
     color: #fcfcfc;
     margin-top: 25px;
 }
+.chatbot-interface {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.chatbot-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.chatbot-messages {
+    height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.chatbot-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chatbot-input input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.chatbot-input button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.chatbot-input button:hover {
+    background-color: #218838;
+}
 
 
 

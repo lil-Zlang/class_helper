@@ -1,0 +1,4 @@
+<!-- messages.html -->
+{% for message in messages %}
+    <div class="{{ message.role }} message">{{ message.content }}</div>
+{% endfor %}
