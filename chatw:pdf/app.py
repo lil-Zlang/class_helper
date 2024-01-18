@@ -171,3 +171,7 @@ def convert_text_to_html_table(text):
     return html_table
 
 app.run(debug=True)
+
+@app.route("/bme")
+def bme_page():
+    return render_template("BME.html")  # Assuming you have a 'bme.html' template
